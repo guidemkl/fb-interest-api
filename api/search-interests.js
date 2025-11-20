@@ -21,13 +21,12 @@ export default async function handler(req, res) {
   
     const endpoint = `https://graph.facebook.com/${FB_API_VERSION}/search`;
   
-    // เพิ่ม fields ที่สำคัญสำหรับ Ads (feature อัปเกรด)
+    // ✅ ตรงนี้ “เอา audience_size ออกจาก fields” เพื่อไม่ให้ API error
     const fields = [
       "id",
       "name",
       "topic",
       "description",
-      "audience_size",
       "path"
     ].join(",");
   
@@ -56,6 +55,7 @@ export default async function handler(req, res) {
           name: item.name,
           topic: item.topic || null,
           description: item.description || null,
+          // ยัง map ไว้เผื่ออนาคต ถ้า API คืนค่ามา แต่ตอนนี้ส่วนใหญ่จะเป็น null
           audience_size: item.audience_size ?? null,
           path: item.path || [],
         })) || [];
